@@ -13,58 +13,66 @@
         <div>
             <h1>Perfect Pizza</h1>
         </div>
-        
-        <div class="cartTotal " >
-          <strong>Total price</strong>  
-          <span class="cartTotalPrice">0.00</span>
-          <a href="#">
-            <img src="shopping-cart.png" alt="">
-          </a>
-        </div>
-    
-    
-        <div class="cart" >
-          <h3>Shopping Cart</h3>
-          <img src="shopping-cart.png" alt="">
-    
-            <table>
-              <tr>
-                <td><strong>Small pizzas total:</strong></td>
-                <td><span class="smallTotalPrice">0.00</span></td>
-              </tr>
-    
-              <tr>
-                <td><strong>Medium pizzas total:</strong></td>
-                <td><span class="mediumTotalPrice">0.00</span></td>
-              </tr>
-              <tr>
-                <td><strong>Large pizza total:</strong></td>
-                <td><span class="largeTotalPrice">0.00</span></td>
-              </tr>
-              <tr>
-                <td><strong>Total price</strong></td>
-                <td><span class="totalPrice">0.00</span></td>
-              </tr>
-            </table>
-        </div>
-        
-        <div>
-            <h1>Perfect Pizza</h1>
-        </div>
-        <div x-data="{med:null,
-             lar:null,
-             sma:null,
-             add:null,
-             largePizza:null,
-             smallPizza:null,
-             mediumPizza:null,
-             pizzaSize:null,
-             qty: null,
-             total:null,
-             buyMedium: true,
-             buyLarge: true,
-             buySmall: true,
-             delete: null}">
+        <div x-data="{
+            mediumPizza: 0,
+           
+            largePizza:0,
+            smallPizza:0,
+            pizzaSize:null,
+            qty: null,
+            total() {
+                return this.largePizza + this.smallPizza + this.mediumPizza
+            },
+            buyMedium: true,
+            buyLarge: true,
+            buySmall: true,
+            delete: null}">
+
+            <div class="cartTotal ">
+                <strong>Total price</strong>
+                <span class="cartTotalPrice" x-text="total().toFixed(2)">0.00</span>
+                <a href="#">
+                    <img src="shopping-cart.png" alt="">
+                </a>
+            </div>
+
+
+            <div class="cart">
+                <h3>Shopping Cart</h3>
+                <img src="shopping-cart.png" alt="">
+
+                <table>
+                    <th>QTY</th>
+                    <tr>
+
+                        <td><strong>Small pizzas total:</strong></td>
+                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
+                        <td><span class="smallTotalPrice" x-html="smallPizza.toFixed(2)">0.00</span></td>
+
+                    </tr>
+
+                    <tr>
+                        <td><strong>Medium pizzas total:</strong></td>
+                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
+                        <td><span class="smallTotalPrice" x-html="mediumPizza.toFixed(2)">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Large pizza total:</strong></td>
+                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
+                        <td><span class="largeTotalPrice" x-html="largePizza.toFixed(2)">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total price</strong></td>
+                        <td></td>
+                        <td><span x-text="total().toFixed(2)" class="totalPrice">0.00</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <h1>Perfect Pizza</h1>
+            </div>
+
 
             <div class="specials">
 
@@ -80,52 +88,55 @@
                         2 or less meat topping.
                         3 or less other toppings.
                     </i>
-                    <button x-show="buyMedium" @click="
-                     pizzaSize = mediumPizza
-                    qty = 1
-                    total = 78.99
-                    
-                ">Buy</button>
+
+                    <div class="">
+                        <button @click="mediumPizza += 78.99">Order</button>
+                    </div>
 
                 </div>
-                <div class="large">
-                    <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
-                        alt="">
-                    <h2>Large Pizza</h2>
-                    <h3>R114.99</h3>
-                    <i>
-                        large margherita pizza with 3 toppings max.
-                        3 meat toppings max.
-                        3 or less other toppings.
-                    </i>
-                    <button x-show="buyLarge" @click="
-               
-                   
-                ">Buy</button>
+
+
+            </div>
+            <div class="large">
+                <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
+                    alt="">
+                <h2>Large Pizza</h2>
+                <h3>R114.99</h3>
+                <i>
+                    large margherita pizza with 3 toppings max.
+                    3 meat toppings max.
+                    3 or less other toppings.
+                </i>
+                <div class="">
+                    <button @click="largePizza += 114.99">Order</button>
                 </div>
-                <div class="small">
-                    <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
-                        alt="">
-                    <h2>Small Pizza</h2>
-                    <h3>R48.99</h3>
-                    <i>
-                        <ul>
-                            <li>small pizza with 3 toppings</li>
-                            <li>1 meat topping.</li>
-                            <li>3 or less other toppings.</li>
-                        </ul>
-                    </i>
-                    <button x-show="buySmall" @click="
-               
-                    
-                ">Buy</button>
+
+
+
+            </div>
+            <div class="small">
+                <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
+                    alt="">
+                <h2>Small Pizza</h2>
+                <h3>R48.99</h3>
+                <i>
+                    <ul>
+                        <li>small pizza with 3 toppings</li>
+                        <li>1 meat topping.</li>
+                        <li>3 or less other toppings.</li>
+                    </ul>
+                </i>
+                <div class="">
+
+                    <button @click="smallPizza += 48.99">Order</button>
                 </div>
             </div>
         </div>
+    </div>
 
 
-        <!-- this is a shopping cart -->
-        <!-- <div class="">
+    <!-- this is a shopping cart -->
+    <!-- <div class="">
             <p>Your Cart</p>
             <p x-text="total"></p>
             <div x-text="qty"></div>
@@ -137,25 +148,25 @@
         </div>
         <div class="">
             < payment section right here -->
-            <!-- error messages for when payment is insufficient -->
-        </div> 
-        <div class="footer">
-            <div class="contact">
-                <strong>Contact us at:</strong>
-                (021)-541-1000
+    <!-- error messages for when payment is insufficient -->
+    </div>
+    <div class="footer">
+        <div class="contact">
+            <strong>Contact us at:</strong>
+            (021)-541-1000
 
-                <strong>twitter /fb /insta </strong> @perfectpizza
-            </div>
-            <div class="address">
-                Pizza Plaza
-                <br>
-                Dough Road
-                <br>
-                Base Town
-                <br>
-                7890
-            </div>
+            <strong>twitter /fb /insta </strong> @perfectpizza
         </div>
+        <div class="address">
+            Pizza Plaza
+            <br>
+            Dough Road
+            <br>
+            Base Town
+            <br>
+            7890
+        </div>
+    </div>
     </div>
 
 
