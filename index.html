@@ -15,9 +15,12 @@
         </div>
         <div x-data="{
             mediumPizza: 0,
-           
+            message: 'Added!',
             largePizza:0,
             smallPizza:0,
+            showCart(){
+                return this.total() > 0
+            },
             pizzaSize:null,
             qty: null,
             total() {
@@ -30,14 +33,14 @@
 
             <div class="cartTotal ">
                 <strong>Total price</strong>
-                <span class="cartTotalPrice" x-text="total().toFixed(2)">0.00</span>
+                <span class="cartTotalPrice" x-text="total() <= 0 ? '0.00' :total().toFixed(2)">0.00</span>
                 <a href="#">
                     <img src="shopping-cart.png" alt="">
                 </a>
             </div>
 
 
-            <div class="cart">
+            <div x-show="showCart()" class="cart">
                 <h3>Shopping Cart</h3>
                 <img src="shopping-cart.png" alt="">
 
@@ -46,25 +49,33 @@
                     <tr>
 
                         <td><strong>Small pizzas total:</strong></td>
-                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
-                        <td><span class="smallTotalPrice" x-html="smallPizza.toFixed(2)">0.00</span></td>
+                        <td> <button id="plus" @click="smallPizza += 48.99">+</button> <button
+                                x-bind:disabled="smallPizza <= 0" id="minus" @click="smallPizza -=48.99">-</button></td>
+                        <td><span class="smallTotalPrice"
+                                x-html="smallPizza <= 0 ? '0.00' : smallPizza.toFixed(2)">0.00</span></td>
 
                     </tr>
 
                     <tr>
                         <td><strong>Medium pizzas total:</strong></td>
-                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
-                        <td><span class="smallTotalPrice" x-html="mediumPizza.toFixed(2)">0.00</span></td>
+                        <td> <button id="plus" @click="mediumPizza += 78.99">+</button> <button
+                                x-bind:disabled="mediumPizza <= 0" id="minus" @click="mediumPizza -= 78.99">-</button>
+                        </td>
+                        <td><span class="smallTotalPrice"
+                                x-html=" mediumPizza <= 0 ? '0.00' : mediumPizza.toFixed(2)">0.00</span></td>
                     </tr>
                     <tr>
                         <td><strong>Large pizza total:</strong></td>
-                        <td> <button id="plus">+</button> <button id="minus">-</button></td>
-                        <td><span class="largeTotalPrice" x-html="largePizza.toFixed(2)">0.00</span></td>
+                        <td> <button id="plus" @click="largePizza += 114.99">+</button> <button
+                                x-bind:disabled="largePizza <= 0   " id="minus" @click="largePizza -= 114.99">-</button>
+                        </td>
+                        <td><span class="largeTotalPrice"
+                                x-html="largePizza <= 0 ? '0.00' :largePizza.toFixed(2)">0.00</span></td>
                     </tr>
                     <tr>
                         <td><strong>Total price</strong></td>
                         <td></td>
-                        <td><span x-text="total().toFixed(2)" class="totalPrice">0.00</span></td>
+                        <td><span x-text="total() <= 0 ? '0.00' :total().toFixed(2)" class="totalPrice">0.00</span></td>
                     </tr>
                 </table>
             </div>
@@ -90,7 +101,8 @@
                     </i>
 
                     <div class="">
-                        <button @click="mediumPizza += 78.99">Order</button>
+
+                        <button x-show="message" @click="mediumPizza += 78.99">Order</button>
                     </div>
 
                 </div>

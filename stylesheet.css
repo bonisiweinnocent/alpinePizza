@@ -8,8 +8,6 @@ body {
   
   .small {
     background-color: #E03571;
-    
-    
   }
   
   .medium {
@@ -113,7 +111,7 @@ body {
 		text-align: left;
 	}
 .cart th{
- text-align: end;
+  padding-right: 80px;
 }
 	.cart img {
 		width: 2em;
