@@ -83,7 +83,7 @@
                                     <button x-bind:disabled="mediumPizza <= 0" id="minus"
                                         @click="mediumPizza -= 78.99, mediumQTY--">-</button>
                                 </td>
-                                <td><span class="smallTotalPrice"
+                                <td><span class="mediumTotalPrice"
                                         x-html=" mediumPizza <= 0 ? '0.00' : mediumPizza.toFixed(2)">0.00</span></td>
                             </tr>
                             <tr>
@@ -159,7 +159,7 @@
 
                             <div class="">
 
-                                <button class="orderbtn" @click="mediumPizza += 78.99">Order</button>
+                                <button class="orderbtn" @click="mediumPizza += 78.99, mediumQTY++">Order</button>
                             </div>
 
                         </div>
@@ -179,7 +179,7 @@
                                 </ul>
                             </i>
                             <div class="">
-                                <button class="orderbtn" @click="largePizza += 114.99">Order</button>
+                                <button class="orderbtn" @click="largePizza += 114.99, largeQTY++">Order</button>
                             </div>
                         </div>
 
