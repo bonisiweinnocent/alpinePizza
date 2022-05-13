@@ -4,25 +4,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="simple-grid.css">
     <title>Document</title>
 </head>
 
 <body>
-    <div>
-        <div>
-            <h1>Perfect Pizza</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <h1>Perfect Pizza</h1>
+            </div>
+
         </div>
+
         <div x-data="{
             mediumPizza: 0,
             message: 'Added!',
             largePizza:0,
             smallPizza:0,
+            amount: null,
             showCart(){
+
                 return this.total() > 0
             },
             pizzaSize:null,
-            qty: null,
+            smallQTY: 0,
+            largeQTY: 0,
+            mediumQTY:0,
+            totalQTY(){
+                return this.smallQTY + this.mediumQTY + this.largeQTY
+            },
             total() {
                 return this.largePizza + this.smallPizza + this.mediumPizza
             },
@@ -39,116 +51,175 @@
                 </a>
             </div>
 
+            <div class="row">
+                <div class="col-12">
+                    <div x-show="showCart()" class="cart">
+                        <h3>Shopping Cart</h3>
+                        <img src="shopping-cart.png" alt="">
 
-            <div x-show="showCart()" class="cart">
-                <h3>Shopping Cart</h3>
-                <img src="shopping-cart.png" alt="">
+                        <table>
+                            <th>Pizza Siza</th>
+                            <th>QTY</th>
+                            <th>Add or Remove</th>
+                            <th>Price</th>
 
-                <table>
-                    <th>QTY</th>
-                    <tr>
+                            <tr>
 
-                        <td><strong>Small pizzas total:</strong></td>
-                        <td> <button id="plus" @click="smallPizza += 48.99">+</button> <button
-                                x-bind:disabled="smallPizza <= 0" id="minus" @click="smallPizza -=48.99">-</button></td>
-                        <td><span class="smallTotalPrice"
-                                x-html="smallPizza <= 0 ? '0.00' : smallPizza.toFixed(2)">0.00</span></td>
+                                <td><strong>Small pizzas total:</strong></td>
+                                <td><span x-text="smallQTY">0</span></td>
+                                <td> <button id="plus" @click="smallPizza += 48.99, smallQTY++">+</button>
+                                    <button x-bind:disabled="smallPizza <= 0" id="minus"
+                                        @click="smallPizza -=48.99, smallQTY--">-</button>
+                                </td>
+                                <td><span class="smallTotalPrice"
+                                        x-html="smallPizza <= 0 ? '0.00' : smallPizza.toFixed(2)">0.00</span></td>
 
-                    </tr>
+                            </tr>
 
-                    <tr>
-                        <td><strong>Medium pizzas total:</strong></td>
-                        <td> <button id="plus" @click="mediumPizza += 78.99">+</button> <button
-                                x-bind:disabled="mediumPizza <= 0" id="minus" @click="mediumPizza -= 78.99">-</button>
-                        </td>
-                        <td><span class="smallTotalPrice"
-                                x-html=" mediumPizza <= 0 ? '0.00' : mediumPizza.toFixed(2)">0.00</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Large pizza total:</strong></td>
-                        <td> <button id="plus" @click="largePizza += 114.99">+</button> <button
-                                x-bind:disabled="largePizza <= 0   " id="minus" @click="largePizza -= 114.99">-</button>
-                        </td>
-                        <td><span class="largeTotalPrice"
-                                x-html="largePizza <= 0 ? '0.00' :largePizza.toFixed(2)">0.00</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total price</strong></td>
-                        <td></td>
-                        <td><span x-text="total() <= 0 ? '0.00' :total().toFixed(2)" class="totalPrice">0.00</span></td>
-                    </tr>
-                </table>
-            </div>
+                            <tr>
+                                <td><strong>Medium pizzas total:</strong></td>
+                                <td><span x-text="mediumQTY">0</span></td>
+                                <td> <button id="plus" @click="mediumPizza += 78.99, mediumQTY++">+</button>
+                                    <button x-bind:disabled="mediumPizza <= 0" id="minus"
+                                        @click="mediumPizza -= 78.99, mediumQTY--">-</button>
+                                </td>
+                                <td><span class="smallTotalPrice"
+                                        x-html=" mediumPizza <= 0 ? '0.00' : mediumPizza.toFixed(2)">0.00</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Large pizza total:</strong></td>
+                                <td><span x-text="largeQTY">0</span></td>
+                                <td> <button id="plus" @click="largePizza += 114.99,largeQTY++">+</button> 
+                                    <button x-bind:disabled="largePizza <= 0   " id="minus"
+                                        @click="largePizza -= 114.99,largeQTY--">-</button>
+                                </td>
+                                <td><span class="largeTotalPrice"
+                                        x-html="largePizza <= 0 ? '0.00' :largePizza.toFixed(2)">0.00</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total price</strong></td>
+                                <td><span x-text="totalQTY()">0</span></td>
+                                <td></td>
+                                <td><span class="error" x-text="total() <= 0 ? '0.00' :total().toFixed(2)"
+                                        class="totalPrice">0.00</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="">
+                            <p>Checkout</p>
+                            <input type="number" min="1" max="1000"  placeholder="Please input amount here" x-model="amount">
 
-            <div>
-                <h1>Perfect Pizza</h1>
-            </div>
+                            <template x-if="amount== ' '">
+                                <p class="success">Enter amount </p>
+                            </template>
 
+                            <template x-if="amount== total()">
+                                <p class="success">Done!</p>
+                            </template>
 
-            <div class="specials">
+                            <template x-if="amount < total()">
+                                <p class="error">Ooops,thats too low</p>
+                            </template>
+                            <template x-if="amount > total()">
+                                <p class="error">Whooo,thats too much,please enter the exact amount</p>
+                            </template>
+                           
+                        </div>
 
-
-
-                <div class="medium">
-                    <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
-                        alt="">
-                    <h2>Medium Pizza</h2>
-                    <h3>R78.99</h3>
-                    <i>
-                        medium margherita pizza with 3 toppings max.
-                        2 or less meat topping.
-                        3 or less other toppings.
-                    </i>
-
-                    <div class="">
-
-                        <button x-show="message" @click="mediumPizza += 78.99">Order</button>
                     </div>
 
                 </div>
 
-
             </div>
-            <div class="large">
-                <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
-                    alt="">
-                <h2>Large Pizza</h2>
-                <h3>R114.99</h3>
-                <i>
-                    large margherita pizza with 3 toppings max.
-                    3 meat toppings max.
-                    3 or less other toppings.
-                </i>
-                <div class="">
-                    <button @click="largePizza += 114.99">Order</button>
+
+
+
+            <div class="specials">
+                <div class="row">
+                    <div class="col-3">
+
+
+                        <div class="medium">
+                            <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
+                                alt="">
+                            <h4>Medium Pizza</h4>
+                            <h5>R78.99</h5>
+                            <i>
+                                <ul>
+                                    <li>
+
+                                        medium margherita pizza with 3 toppings max.
+                                    </li>
+                                    <li> 2 or less meat topping.</li>
+
+                                    <li> 3 or less other toppings.</li>
+
+                                </ul>
+                            </i>
+
+                            <div class="">
+
+                                <button class="orderbtn" @click="mediumPizza += 78.99">Order</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-3">
+                        <div class="large">
+                            <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
+                                alt="">
+                            <h4>Large Pizza</h4>
+                            <h5>R114.99</h5>
+                            <i>
+                                <ul>
+                                    <li> large margherita pizza with 3 toppings max.</li>
+                                    <li>3 meat toppings max.</li>
+                                    <li>3 or less other toppings.</li>
+                                </ul>
+                            </i>
+                            <div class="">
+                                <button class="orderbtn" @click="largePizza += 114.99">Order</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-3">
+                        <div class="small">
+                            <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
+                                alt="">
+                            <h4>Small Pizza</h4>
+                            <h5>R48.99</h5>
+                            <i>
+                                <ul>
+                                    <li>small pizza with 3 toppings</li>
+                                    <li>1 meat topping.</li>
+                                    <li>3 or less other toppings.</li>
+                                </ul>
+                            </i>
+                            <div class="">
+
+                                <button class="orderbtn" @click="smallPizza += 48.99, smallQTY++">Order</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
 
 
-            </div>
-            <div class="small">
-                <img src="https://image.shutterstock.com/image-vector/italian-pizza-tomato-sausage-olive-600w-554691619.jpg"
-                    alt="">
-                <h2>Small Pizza</h2>
-                <h3>R48.99</h3>
-                <i>
-                    <ul>
-                        <li>small pizza with 3 toppings</li>
-                        <li>1 meat topping.</li>
-                        <li>3 or less other toppings.</li>
-                    </ul>
-                </i>
-                <div class="">
 
-                    <button @click="smallPizza += 48.99">Order</button>
-                </div>
+
+
             </div>
+
+
+
         </div>
-    </div>
 
 
-    <!-- this is a shopping cart -->
-    <!-- <div class="">
+        <!-- this is a shopping cart -->
+        <!-- <div class="">
             <p>Your Cart</p>
             <p x-text="total"></p>
             <div x-text="qty"></div>
@@ -160,7 +231,7 @@
         </div>
         <div class="">
             < payment section right here -->
-    <!-- error messages for when payment is insufficient -->
+        <!-- error messages for when payment is insufficient -->
     </div>
     <div class="footer">
         <div class="contact">
@@ -180,7 +251,7 @@
         </div>
     </div>
     </div>
-
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
